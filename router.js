@@ -1,6 +1,7 @@
 const ytdl = require("ytdl-core");
 const express = require("express");
 const router = express.Router();
+const axios = require('axios')
 const { ytPlay, ytMp3, ytMp4 } = require("./lib/youtube");
 const {
   IGStalk,
@@ -23,7 +24,24 @@ const {
   ArtiNama,
   ArtiMimpi
 } = require("./lib");
-
+const getBuffer = async (url, options) => {
+	try {
+		options ? options : {}
+		const res = await axios({
+			method: "get",
+			url,
+			headers: {
+				'DNT': 1,
+				'Upgrade-Insecure-Request': 1
+			},
+			...options,
+			responseType: 'arraybuffer'
+		})
+		return res.data
+	} catch (e) {
+		console.log(`Error : ${e}`)
+	}
+}
 const respon = {
   param: {
     status: 400,
