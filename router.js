@@ -124,8 +124,8 @@ router.get("/ytmp4", async (req, res) => {
 
   let hasil = se.result
   getBuffer(hasil).then( data => {
-  fs.writeFileSync(`./tmp/${asu}.mp4`, data)
-  res.sendFile(`./tmp/${asu}.mp4`)
+  fs.writeFileSync(`${_path}/tmp/${asu}.mp4`, data)
+  res.sendFile(`${_path}/tmp/${asu}.mp4`)
 }).catch(error => {
         console.log(error);
         res.status(500).send({
