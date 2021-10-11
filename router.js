@@ -118,8 +118,8 @@ router.get("/ytmp3", async (req, res) => {
 router.get("/ytmp4", async (req, res) => {
   var id = req.query.url || req.query.link;
   if (!id) return res.json(respon.param);
-  ytMp4(id).then(result => {
-  let hasil = result.result
+  let se = await ytMp4(id)
+  let hasil = se.result
   getBuffer(hasil).then( data => {
   fs.writeFileSync(`./tmp/${asu}.mp4`, data)
   res.sendFile(`./tmp/${asu}.mp4`)
@@ -131,12 +131,7 @@ router.get("/ytmp4", async (req, res) => {
         })
 
        
-    }).catch(error => {
-        console.log(error);
-        res.status(500).send({
-            status: 500,
-            message: 'Internal Server Error'
-        })
+    
    
 });
 router.get("/cuaca", async (req, res) => {
