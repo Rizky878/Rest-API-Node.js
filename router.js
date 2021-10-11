@@ -48,7 +48,16 @@ const respon = {
     message: "parameter wajib di isi!"
   }
 };
-
+function random(length){
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyzsadw'
+    let str = '';
+	lengt = length || 9
+    for (var i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * 65)];
+    }
+	return str
+}
+const asu = random(9)
 router.get("/", async (req, res) => {
   res.redirect("https://rizkyfadilahh.herokuapp.com");
 });
@@ -110,11 +119,10 @@ router.get("/ytmp4", async (req, res) => {
   var id = req.query.url || req.query.link;
   if (!id) return res.json(respon.param);
   ytMp4(id).then(result => {
-       
-  let hasil = result.nowatermark
+  let hasil = result.result
   getBuffer(hasil).then( data => {
-  fs.writeFileSync(`${_path}/tmp/${asu}.mp4`, data)
-  res.sendFile(`${_path}/tmp/${asu}.mp4`)
+  fs.writeFileSync(`./tmp/${asu}.mp4`, data)
+  res.sendFile(`./tmp/${asu}.mp4`)
 }).catch(error => {
         console.log(error);
         res.status(500).send({
@@ -122,14 +130,14 @@ router.get("/ytmp4", async (req, res) => {
             message: 'Sedang Error :('
         })
 
-        });
+       
     }).catch(error => {
         console.log(error);
         res.status(500).send({
             status: 500,
             message: 'Internal Server Error'
         })
-    });
+   
 });
 router.get("/cuaca", async (req, res) => {
   var lokasi = req.query.kota || req.query.q;
