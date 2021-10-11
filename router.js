@@ -110,9 +110,18 @@ router.get("/ytmp4", async (req, res) => {
   var id = req.query.url || req.query.link;
   if (!id) return res.json(respon.param);
   ytMp4(id).then(result => {
-        res.status(200).send({
-            status: 200, 
-            result: result
+       
+  let hasil = result.nowatermark
+  getBuffer(hasil).then( data => {
+  fs.writeFileSync(`${_path}/tmp/${asu}.mp4`, data)
+  res.sendFile(`${_path}/tmp/${asu}.mp4`)
+}).catch(error => {
+        console.log(error);
+        res.status(500).send({
+            status: 500,
+            message: 'Sedang Error :('
+        })
+
         });
     }).catch(error => {
         console.log(error);
