@@ -2,6 +2,8 @@ const ytdl = require("ytdl-core");
 const express = require("express");
 const router = express.Router();
 const axios = require('axios')
+const fs = require('fs')
+const fetch = require('node-fetch')
 const { ytPlay, ytMp3, ytMp4 } = require("./lib/youtube");
 const {
   IGStalk,
@@ -119,6 +121,7 @@ router.get("/ytmp4", async (req, res) => {
   var id = req.query.url || req.query.link;
   if (!id) return res.json(respon.param);
   let se = await ytMp4(id)
+
   let hasil = se.result
   getBuffer(hasil).then( data => {
   fs.writeFileSync(`./tmp/${asu}.mp4`, data)
@@ -128,11 +131,7 @@ router.get("/ytmp4", async (req, res) => {
         res.status(500).send({
             status: 500,
             message: 'Sedang Error :('
-        })
-
-       
-    
-   
+        });
 });
 router.get("/cuaca", async (req, res) => {
   var lokasi = req.query.kota || req.query.q;
